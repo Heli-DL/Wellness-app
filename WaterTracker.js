@@ -12,6 +12,8 @@ import Animated, {
   useSharedValue,
   withRepeat,
   withTiming,
+  createAnimatedPropAdapter,
+  processColor,
 } from "react-native-reanimated";
 import { useContext } from "react";
 import { AppStateContext } from "./AppStateContext";
@@ -46,7 +48,17 @@ export default function WaterTracker() {
       stroke: theme.colors.blue90,
       strokeOpacity: 0.5,
     };
-  });
+  }
+  , [], createAnimatedPropAdapter(
+   (props) => {
+     if (Object.keys(props).includes('fill')) {
+       props.fill = {type: 0, payload: processColor(props.fill)}
+     }
+     if (Object.keys(props).includes('stroke')) {
+       props.stroke = {type: 0, payload: processColor(props.stroke)}
+     }
+   },
+   ['fill', 'stroke']));
 
   // Animated props for first wave
   const firstWaveProps = useAnimatedProps(() => {
