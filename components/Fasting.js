@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView } from
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, ref, onValue } from 'firebase/database';
-import { firebaseConfig } from './utils/firebaseConfig';
+import { firebaseConfig } from '../utils/firebaseConfig';
 import { BarChart } from "react-native-chart-kit";
 import moment from 'moment';
 import { useContext } from 'react';
-import { AppStateContext } from './AppStateContext';
+import { AppStateContext } from '../AppStateContext';
 
 // Initialize Firebase app and database
 const app = initializeApp(firebaseConfig);

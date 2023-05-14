@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
 import { WaterHeader } from "./WaterHeader";
 import { Fontisto } from "@expo/vector-icons";
-import { styles } from "./styles";
-import { theme } from "./styles/theme";
+import { styles } from "../styles/styles";
+import { theme } from "../styles/theme";
 import Svg, { Circle, Path } from "react-native-svg";
 import Animated, {
   Easing,
@@ -16,7 +16,7 @@ import Animated, {
   processColor,
 } from "react-native-reanimated";
 import { useContext } from "react";
-import { AppStateContext } from "./AppStateContext";
+import { AppStateContext } from "../AppStateContext";
 
 const { width } = Dimensions.get("screen");
 // Creates animated version of components

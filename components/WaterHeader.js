@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { cups } from './utils/cups';
-import { styles } from './styles';
-import { theme } from "./styles/theme";
+import { cups } from '../utils/cups';
+import { styles } from '../styles/styles';
+import { theme } from "../styles/theme";
 import { useContext } from "react";
-import { AppStateContext } from "./AppStateContext";
+import { AppStateContext } from "../AppStateContext";
 
 export function WaterHeader(props) {
   const { ml } = props;

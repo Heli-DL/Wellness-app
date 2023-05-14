@@ -1,10 +1,10 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Home from './Home';
-import Recipes from './Recipes';
-import WaterTracker from './WaterTracker';
-import WeightTracker from './WeightTracker';
-import Fasting from './Fasting';
+import Home from './components/Home';
+import Recipes from './components/Recipes';
+import WaterTracker from './components/WaterTracker';
+import WeightTracker from './components/WeightTracker';
+import Fasting from './components/Fasting';
 import * as SplashScreen from 'expo-splash-screen';
 
 const Tab = createMaterialBottomTabNavigator();

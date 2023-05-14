@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { useContext } from "react";
-import { AppStateContext } from "./AppStateContext";
+import { AppStateContext } from "../AppStateContext";
 
 export default function Home() {
   const { percentage, totalTime } = useContext(AppStateContext);
@@ -10,7 +10,7 @@ export default function Home() {
       <View style={{flex: 2, justifyContent: 'center', alignItems: 'center', marginTop: 60 }}>
         <Text style={styles.title}>MyFitLife</Text>
         <Image
-          source={require('./assets/logo.png')}
+          source={require('../assets/logo.png')}
           style={{ width: 200, height: 200, marginTop: 20 }}
         />
       </View>

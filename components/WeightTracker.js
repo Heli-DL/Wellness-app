@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, ref, onValue } from 'firebase/database';
-import { firebaseConfig } from './utils/firebaseConfig';
+import { firebaseConfig } from '../utils/firebaseConfig';
 import { LineChart } from "react-native-chart-kit";
 import moment from 'moment';
 
