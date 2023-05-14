@@ -2,7 +2,7 @@
 
 MyFitLife is designed to help you improve your health and wellbeing by providing a range of useful features. With our recipe search, you can browse a large database of healthy meal options based on your diet and see the instruction and number of calories for each recipe. Our water drinking tracker helps you stay hydrated by tracking your progress throughout the day. The weight tracker allows you to track your progress over time, while the intermittent fasting timer helps you manage your fasting schedule. All of these features are designed to help you make informed decisions about your diet and lifestyle, so you can feel your best.
 
-## Used teknologies
+## Used technologies
 
   * Navigation: React Navigation and Material bottom tabs
   * Databse: Firebase
