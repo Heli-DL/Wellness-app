@@ -1,88 +1,161 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { LineChart } from 'react-native-svg-charts';
+import React, { useState } from "react";
+import { Dimensions, TouchableOpacity, View } from "react-native";
+import { WaterHeader } from "./WaterHeader";
+import { Fontisto } from "@expo/vector-icons";
+import { styles } from "./styles";
+import { theme } from "./styles/theme";
+import Svg, { Circle, Path } from "react-native-svg";
+import Animated, {
+  Easing,
+  interpolate,
+  useAnimatedProps,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
+import { useContext } from "react";
+import { AppStateContext } from "./AppStateContext";
+
+const { width } = Dimensions.get("screen");
+// Creates animated version of components
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedPath = Animated.createAnimatedComponent(Path);
+const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
 export default function WaterTracker() {
-    const [waterIntake, setWaterIntake] = useState(0);
-    const [waterIntakeHistory, setWaterIntakeHistory] = useState([0, 0, 0, 0, 0, 0, 0]);
-  
-    const handleDrinkWater = (amount) => {
-      setWaterIntake(waterIntake + amount);
-      setWaterIntakeHistory((prevHistory) => {
-        const newHistory = [...prevHistory];
-        newHistory[6] += amount;
-        return newHistory;
-      });
-    };
-  
-    const waterIntakeLitres = (waterIntake / 1000).toFixed(2); 
+  // Animated values
+  const heightAnimated = useSharedValue(100);
+  const waveAnimated = useSharedValue(5);
+  const buttonStrokeAnimated = useSharedValue(0);
 
-    const chartData = waterIntakeHistory.map((amount, index) => ({ x: index, y: amount }));
+  const [milliliters, setMilliliters] = useState(0);
+  const { setPercentage } = useContext(AppStateContext);
   
-    return (
-        <View style={styles.container}>
-          <Text style={styles.title}>Water Tracker</Text>
-          <Text style={styles.text}>Current water intake: {waterIntakeLitres} L</Text>
-          <View style={styles.chartContainer}>
-            <LineChart
-              style={{ height: 200 }}
-              data={chartData}
-              svg={{ stroke: '#2196F3' }}
-              contentInset={{ top: 40, bottom: 40 }}
-              yMin={0}
-              yMax={Math.max(...waterIntakeHistory) + 100}
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Drink 250 mL from a glass"
-              onPress={() => handleDrinkWater(250)}
-              icon={() => <Icon name="glass" size={20} color="#fff" />}
-              style={styles.button}
-            />
-            <Button
-              title="Drink 500 mL from a bottle"
-              onPress={() => handleDrinkWater(500)}
-              icon={() => <Icon name="bottle" size={20} color="#fff" />}
-              style={styles.button}
-            />
-          </View>
-        </View>
-      );
+  const buttonProps = useAnimatedProps(() => {
+    // Define the animated properties for the button
+    return {
+      cx: 60, // Center x-coordinate of the button circle
+      cy: 60, // Center y-coordinate of the button circle
+      r: 40, // Radius of the button circle
+      fill: theme.colors.blue100,
+      strokeWidth: interpolate( // Width of the button circle stroke
+        buttonStrokeAnimated.value,
+        [0, 0.5, 1],
+        [17, 40, 17]
+      ),
+      stroke: theme.colors.blue90,
+      strokeOpacity: 0.5,
     };
-    
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#F5FCFF',
-      },
-      title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-      },
-      text: {
-        fontSize: 18,
-      marginBottom: 20,
-    },
-    chartContainer: {
-      marginBottom: 20,
-    },
-    buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '80%',
-    },
-    button: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#2196F3',
-      borderRadius: 5,
-      padding: 10,
-      width: '45%',
-    },
-});
+  });
+
+  // Animated props for first wave
+  const firstWaveProps = useAnimatedProps(() => {
+    return {
+      d: `
+        M 0 0
+        Q 35 ${waveAnimated.value} 70 0
+        T 140 0
+        T 210 0
+        T 280 0
+        T 350 0
+        T 420 0
+        V ${heightAnimated.value}
+        H 0
+        Z
+    `,
+    };
+  });
+ // Animated props for second wave
+  const secondWaveProps = useAnimatedProps(() => {
+    return {
+      d: `
+        M 0 0
+        Q 45 ${waveAnimated.value + 5} 90 0
+        T 180 0
+        T 270 0
+        T 360 0
+        T 900 0
+        T 540 0
+        V ${heightAnimated.value}
+        H 0
+        Z
+    `,
+    };
+  });
+
+  const SVGProps = useAnimatedProps(() => {
+    return {
+      height: heightAnimated.value,
+      viewBox: `0 0 ${width} ${heightAnimated.value}`,
+    };
+  });
+
+  // Updates the percentage and milliliters
+  function handleDrink() {
+    buttonStrokeAnimated.value = 0;
+    waveAnimated.value = 5;
+  
+    buttonStrokeAnimated.value = withTiming(1, {
+      duration: 500,
+      easing: Easing.ease,
+    });
+    waveAnimated.value = withRepeat(
+      withTiming(17, {
+        duration: 500,
+        easing: Easing.ease,
+      }),
+      2,
+      true
+    );
+    // Updates the height of the waves
+    heightAnimated.value = withTiming(heightAnimated.value + 100, {
+      duration: 1000,
+      easing: Easing.ease,
+    });
+    // Updates the percentage
+    const newPercentage = Math.round(heightAnimated.value * 0.1);
+    setPercentage(newPercentage);
+    // Updates the milliliters
+    if (newPercentage !== 0) {
+      const newMilliliters = (heightAnimated.value * 2.4).toFixed(0);
+      setMilliliters(newMilliliters);
+  }
+}
+
+  return (
+    <View style={styles.container}>
+      <WaterHeader ml={milliliters} />
+      <AnimatedSvg width={width} animatedProps={SVGProps}>
+        <AnimatedPath
+          animatedProps={firstWaveProps}
+          fill={theme.colors.blue100}
+          transform="translate(0,10)"
+        />
+
+        <AnimatedPath
+          animatedProps={secondWaveProps}
+          fill={theme.colors.blue70}
+          transform="translate(0,15)"
+        />
+      </AnimatedSvg>
+
+      <View style={styles.footer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleDrink}
+          activeOpacity={0.7}
+        >
+          <Svg width="120" height="120">
+            <AnimatedCircle animatedProps={buttonProps} />
+          </Svg>
+          <Fontisto
+            name="blood-drop"
+            size={32}
+            color={theme.colors.blue90}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}

@@ -5,16 +5,21 @@ import Recipes from './Recipes';
 import WaterTracker from './WaterTracker';
 import WeightTracker from './WeightTracker';
 import Fasting from './Fasting';
+import * as SplashScreen from 'expo-splash-screen';
 
 const Tab = createMaterialBottomTabNavigator();
+SplashScreen.preventAutoHideAsync();
 
-export default function MyTabs() {
+export default function MyTabs(props) {
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor="#e91e63"
+      activeColor="#2075FB"
+      inactiveColor="grey"
+      secondaryContainer= 'transparent'
       labelStyle={{ fontSize: 12 }}
-      style={{ backgroundColor: 'tomato' }}
+      barStyle={{ backgroundColor: '#1C1C25',  }}
     >
       <Tab.Screen
         name="Home"
@@ -32,7 +37,7 @@ export default function MyTabs() {
         options={{
           tabBarLabel: 'Recipes',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={26} />
+            <MaterialCommunityIcons name="food-variant" color={color} size={26} />
           ),
         }}
       />
@@ -42,7 +47,7 @@ export default function MyTabs() {
         options={{
           tabBarLabel: 'Water',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={26} />
+            <MaterialCommunityIcons name="water" color={color} size={26} />
           ),
         }}
       />
@@ -52,7 +57,7 @@ export default function MyTabs() {
         options={{
           tabBarLabel: 'Weight',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={26} />
+            <MaterialCommunityIcons name="scale-bathroom" color={color} size={26} />
           ),
         }}
       />
@@ -62,10 +67,11 @@ export default function MyTabs() {
         options={{
           tabBarLabel: 'Fasting',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={26} />
+            <MaterialCommunityIcons name="timer" color={color} size={26} />
           ),
         }}
       />
     </Tab.Navigator>
   );
 }
+

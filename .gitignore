@@ -19,3 +19,5 @@ web-build/
 # ignore dotenv configuration file
 .env
 
+firebaseConfig.js
+
