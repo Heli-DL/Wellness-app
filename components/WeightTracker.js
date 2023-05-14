@@ -24,7 +24,7 @@ export default function WeightTracker() {
       const data = snapshot.val();
       let weightData = data
       ? Object.keys(data).map((key) => ({
-          date: moment(data[key].timestamp).format('MMM D, YYYY'),
+          date: moment(data[key].timestamp).format('MMM D, YY'),
           weight: data[key].weight,
         }))
       : [];
@@ -70,7 +70,7 @@ export default function WeightTracker() {
           <LineChart
             data={data}
             width={Dimensions.get("window").width} // from react-native
-            height={300}
+            height={340}
             yAxisSuffix="kg"
             yAxisInterval={1} // optional, defaults to 1
             chartConfig={{
@@ -79,22 +79,20 @@ export default function WeightTracker() {
               backgroundGradientTo: "#ffa726",
               backgroundGradientFromOpacity: 1,
               backgroundGradientToOpacity: 0.6,
-              decimalPlaces: 2, // optional, defaults to 2dp
+              decimalPlaces: 1, // optional, defaults to 2dp
               color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              style: {
-                borderRadius: 16
-              },
               propsForDots: {
                 r: "6",
                 strokeWidth: "2",
                 stroke: "#ffa726"
-              }
+              },
             }}
             bezier
             style={{
-              borderRadius: 16
+              borderRadius: 16,
             }}
+            verticalLabelRotation={45}
           />
           ) : null}
         </ScrollView>
